@@ -9,6 +9,8 @@ const socket = io();
 //     socket.emit('increment');
 // })
 
+const {username,room} = Qs.parse(location.search,{ignoreQueryPrefix: true})
+
 socket.on('msg',(msg)=>{
     console.log(msg);
     const html=Mustache.render(document.querySelector("#message-template").innerHTML,{
@@ -65,3 +67,5 @@ document.querySelector("#send-location").addEventListener('click',()=>{
 
     })
 })
+
+socket.emit('join',{username,room})

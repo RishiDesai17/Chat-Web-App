@@ -16,8 +16,11 @@ io.on('connection',(socket)=>{
     //     //socket.emit('countupdated',count);
     //     io.emit('countupdated',count);
     // })
-    socket.emit('msg',generateMsg("Welcome!!"));
-    socket.broadcast.emit('user',generateMsg("NEW USER!!"))
+    socket.on('join',({username,room})=>{
+        socket.join(room)
+        socket.emit('msg',generateMsg("Welcome!!"));
+        socket.broadcast.to(room).emit('user',generateMsg(`${username} has joined the chat!!`))
+    })
     socket.on('sendMsg',(message,cb)=>{
         const filter = new Filter()
         if(filter.isProfane(message)){
