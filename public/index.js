@@ -15,7 +15,8 @@ socket.on('msg',(msg)=>{
     console.log(msg);
     const html=Mustache.render(document.querySelector("#message-template").innerHTML,{
         message: msg.text,
-        createdAt: moment(msg.createdAt).format('H:mm')
+        createdAt: moment(msg.createdAt).format('H:mm'),
+        username: msg.username
     })
     document.querySelector("#messages").insertAdjacentHTML('beforeend',html);
 })
@@ -24,15 +25,20 @@ socket.on('user',(msg)=>{
     console.log(msg);
     const html=Mustache.render(document.querySelector("#user-template").innerHTML,{
         message: msg.text,
-        createdAt: moment(msg.createdAt).format('H:mm')
+        createdAt: moment(msg.createdAt).format('H:mm'),
+        username: msg.username
     })
     document.querySelector("#messages").insertAdjacentHTML('beforeend',html);
 })
 
 socket.on('locationMsg',(msg)=>{
+    // if(username===msg.username){
+    //     alert("to do");
+    // }
     const html=Mustache.render(document.querySelector("#location-template").innerHTML,{
         link: msg.link,
-        tstamp: moment(msg.tstamp).format('H:mm')
+        tstamp: moment(msg.tstamp).format('H:mm'),
+        username: msg.username
     })
     document.querySelector("#messages").insertAdjacentHTML('beforeend',html);
 })
@@ -68,4 +74,9 @@ document.querySelector("#send-location").addEventListener('click',()=>{
     })
 })
 
-socket.emit('join',{username,room})
+socket.emit('join',{username,room},(error)=>{
+    if(error){
+        location.href="/";
+        alert(error);
+    }
+})

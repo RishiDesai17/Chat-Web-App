@@ -33,9 +33,7 @@
                       <div class="chat_people">
                         <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
                         <div class="chat_ib">
-                          <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-                          <p>Test, which is a new approach to have all solutions 
-                            astrology under one roof.</p>
+                          <h5>MEMBER</h5>
                         </div>
                       </div>
                     </div>
@@ -55,9 +53,11 @@
                   </div>
                   <div class="type_msg">
                     <div class="input_msg_write">
-                      <input type="text" class="write_msg" id="input" placeholder="Type a message" />
-                      <button id="submit" class="msg_send_btn" type="button"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
-                      <button id="send-location" class="msg_loc_btn" type="button"><i class="fa fa-map-marker" aria-hidden="true"></i></button>
+                      <form action="">
+                        <input type="text" class="write_msg" id="input" placeholder="Type a message" required autocomplete="off"/>
+                        <button id="submit" class="msg_send_btn" type="submit"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
+                        <button id="send-location" class="msg_loc_btn" type="button"><i class="fa fa-map-marker" aria-hidden="true"></i></button>
+                      </form>
                     </div>
                   </div>
                 </div>
@@ -73,6 +73,7 @@
             <div class="incoming_msg_img"></div>
             <div class="received_msg">
               <div class="received_withd_msg">
+                <span class="time_date"><strong>{{username}}</strong></span>
                 <p>{{message}}</p>    
                 <span class="time_date"> {{createdAt}}</span></div>
             </div>
@@ -83,6 +84,8 @@
             <div class="incoming_msg_img"></div>
             <div class="received_msg">
               <div class="received_withd_msg">
+                <span class="time_date"><strong>{{username}}</strong></span>
+                <!-- <iframe width="200" height="100" src="{{link}}"></iframe> -->
                 <p><a href="{{link}}" target="_blank">location</a> </p>
                 <span class="time_date">{{tstamp}}</span>
               </div>
