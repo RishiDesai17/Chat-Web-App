@@ -1,4 +1,16 @@
 const users = [];
+const messages = [];
+//users.length=2;
+
+const getMsgs = (room) => {
+    return messages.filter((msg)=>{
+        return msg.room===room
+    })
+}
+
+const addMsg = ({room,username,message,createdAt}) => {
+    messages.push({room,username,message,createdAt})
+}
 
 const addUser = ({id,username,room}) => {
     username=username.trim().toLowerCase()
@@ -42,4 +54,4 @@ const getUsersInRoom = (room) => {
     })
 }
 
-module.exports = {addUser,removeUser,getUser,getUsersInRoom}
+module.exports = {addUser,removeUser,getUser,getUsersInRoom,addMsg,getMsgs}

@@ -1,3 +1,4 @@
+//import {addMsg,getMsgs} from './utils/users'
 const socket = io();
 
 // socket.on('countupdated',(count)=>{
@@ -11,9 +12,19 @@ const socket = io();
 
 const {username,room} = Qs.parse(location.search,{ignoreQueryPrefix: true})
 
+// const autoScroll = () => {
+//     const newMsg = messages.lastElementChild
+// }
+
 socket.on('msg',(msg)=>{
     console.log(msg);
-    const html=Mustache.render(document.querySelector("#message-template").innerHTML,{
+    let x;
+    if(username===msg.username){
+        x = "#message-template-me"
+    }else{
+        x="#message-template"
+    }
+    const html=Mustache.render(document.querySelector(x).innerHTML,{
         message: msg.text,
         createdAt: moment(msg.createdAt).format('H:mm'),
         username: msg.username
@@ -29,6 +40,18 @@ socket.on('user',(msg)=>{
         username: msg.username
     })
     document.querySelector("#messages").insertAdjacentHTML('beforeend',html);
+})
+
+socket.on('usersList',(data)=>{
+    document.querySelector('#room-name').innerHTML=data.room
+    // const html1=Mustache.render(document.querySelector('#get-message-template').innerHTML,{
+    //     msgs: data.messages
+    // })
+    // document.querySelector("#messages").innerHTML = html1;
+    const html=Mustache.render(document.querySelector('#members-template').innerHTML,{
+        users: data.users
+    })
+    document.querySelector(".chat_people").innerHTML = html;
 })
 
 socket.on('locationMsg',(msg)=>{
@@ -70,7 +93,6 @@ document.querySelector("#send-location").addEventListener('click',()=>{
             }
             console.log("Location shared!");
         });
-
     })
 })
 
@@ -79,4 +101,5 @@ socket.emit('join',{username,room},(error)=>{
         location.href="/";
         alert(error);
     }
+    //console.log(getMsgs(room));
 })

@@ -6,7 +6,7 @@ const server = http.createServer(app);
 const io = socketio(server);
 const Filter = require('bad-words');
 const {generateMsg,generateLoc} = require('./public/utils/messages')
-const {addUser,removeUser,getUser,getUsersInRoom} = require('./public/utils/users')
+const {addUser,removeUser,getUser,getUsersInRoom,getMsgs,addMsg} = require('./public/utils/users')
 
 //let count =0;
 io.on('connection',(socket)=>{
@@ -26,6 +26,14 @@ io.on('connection',(socket)=>{
             socket.join(user.room)
             socket.emit('msg',generateMsg("Admin","Welcome!!"));
             socket.broadcast.to(user.room).emit('user',generateMsg(null,`${user.username} has joined the chat!!`))
+            io.to(user.room).emit('usersList',{
+                room: user.room,
+                socketID: socket.id,
+                users: getUsersInRoom(user.room),
+                messages: getMsgs(user.room)
+            })
+            console.log(getMsgs(user.room))            
+            console.log(getUsersInRoom(user.room))
             cb();
         }
     })
@@ -35,13 +43,19 @@ io.on('connection',(socket)=>{
         if(filter.isProfane(message)){
             return cb("Profanity is not allowed");
         }
-        io.to(user.room).emit('msg',generateMsg(user.username,message))
+        let y = generateMsg(user.username,message)
+        io.to(user.room).emit('msg',y)
+        addMsg({room:user.room,username:user.username,message:message,createdAt:new Date().getTime()})
         cb();
     })
     socket.on('disconnect',()=>{
         const user = removeUser(socket.id)
         if(user){
             io.to(user.room).emit('user',generateMsg(null,`${user.username} has left!`))
+            io.to(user.room).emit('usersList',{
+                room: user.room,
+                users: getUsersInRoom(user.room)
+            })
         }
     })
     socket.on('location',(position,cb)=>{

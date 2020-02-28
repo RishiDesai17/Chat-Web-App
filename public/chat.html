@@ -18,7 +18,7 @@
                 <div class="inbox_people">
                   <div class="headind_srch">
                     <div class="recent_heading">
-                      <h4>Recent</h4>
+                      <h4 id='room-name'></h4>
                     </div>
                     <div class="srch_bar">
                       <div class="stylish-input-group">
@@ -31,10 +31,7 @@
                   <div class="inbox_chat">
                     <div class="chat_list active_chat">
                       <div class="chat_people">
-                        <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-                        <div class="chat_ib">
-                          <h5>MEMBER</h5>
-                        </div>
+                        
                       </div>
                     </div>
                   </div>
@@ -79,6 +76,29 @@
             </div>
           </div>
     </script>
+    <script id="get-message-template" type="text/html">
+      <!-- <div>
+          <p>{{createdAt}}: {{message}}</p>    
+      </div> -->
+      {{#msgs}}
+      <div class="incoming_msg">
+          <div class="incoming_msg_img"></div>
+          <div class="received_msg">
+            <div class="received_withd_msg">
+              <span class="time_date"><strong>{{username}}</strong></span>
+              <p>{{message}}</p>    
+              <span class="time_date"> {{createdAt}}</span></div>
+          </div>
+        </div>
+        {{/msgs}}
+  </script>
+    <script id="message-template-me" type="text/html">
+      <div class="outgoing_msg">
+        <div class="sent_msg">
+          <p>{{message}}</p>
+          <span class="time_date"> {{createdAt}}</span> </div>
+      </div>
+  </script>
     <script id="location-template" type="text/html">
         <div class="incoming_msg">
             <div class="incoming_msg_img"></div>
@@ -94,6 +114,17 @@
         <div>
                 
         </div>
+    </script>
+    <script id="members-template" type="text/html">
+      <!-- <div class="chat_img"> 
+       <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> 
+      </div> -->
+      <div class="chat_ib">
+        {{#users}}
+        <h5>{{username}}</h5>
+        {{/users}}
+      </div>
+      
     </script>
     <script id="user-template" type="text/html">
         <span class="time_date" style="text-align:center;margin-bottom:10px">{{message}} </span>      
