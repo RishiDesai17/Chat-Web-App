@@ -12,9 +12,21 @@ const socket = io();
 
 const {username,room} = Qs.parse(location.search,{ignoreQueryPrefix: true})
 
-// const autoScroll = () => {
-//     const newMsg = messages.lastElementChild
-// }
+const autoScroll = () => {
+    const newMsg = document.querySelector('#messages').lastElementChild
+    const newMessageStyles = getComputedStyle(newMsg)
+    const margin = parseInt(newMessageStyles.marginBottom)
+    const newMessageHeight = newMsg.offsetHeight + margin
+    const visibleHeight = document.querySelector('#msg_box').offsetHeight
+    const containerHeight = document.querySelector('#msg_box').scrollHeight
+    console.log(containerHeight)
+    console.log(newMessageHeight)
+    const scrollOffset = document.querySelector('#msg_box').scrollTop + visibleHeight
+    console.log(scrollOffset)
+    if(containerHeight-newMessageHeight<=scrollOffset){
+        document.querySelector('#msg_box').scrollTop = document.querySelector('#msg_box').scrollHeight
+    }
+}
 
 socket.on('msg',(msg)=>{
     console.log(msg);
@@ -30,6 +42,7 @@ socket.on('msg',(msg)=>{
         username: msg.username
     })
     document.querySelector("#messages").insertAdjacentHTML('beforeend',html);
+    autoScroll();
 })
 
 socket.on('user',(msg)=>{
@@ -64,6 +77,7 @@ socket.on('locationMsg',(msg)=>{
         username: msg.username
     })
     document.querySelector("#messages").insertAdjacentHTML('beforeend',html);
+    autoScroll();
 })
 
 document.querySelector("#submit").addEventListener('click',()=>{
